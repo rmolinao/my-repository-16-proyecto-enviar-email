@@ -22,13 +22,15 @@ document.addEventListener("DOMContentLoaded", () => {
         inputMensaje = <HTMLTextAreaElement> document.getElementById('mensaje');
     };
 
+    const validar = (evt: Event):void =>{
+        evt.preventDefault();
+        console.log((evt.target as HTMLInputElement).value);
+    };
 
-
-    const asignarEventos = (): void =>{
-        inputEmail.addEventListener('blur',(evt: Event) => {
-            evt.preventDefault();
-            console.log((evt.target as HTMLInputElement).value);
-        });
+    const asignarEventos = (): void => {
+        inputEmail.addEventListener('blur',validar);
+        inputAsunto.addEventListener('blur',validar);
+        inputMensaje.addEventListener('blur',validar);
     };
 
     seleccionarElementosInterface();
