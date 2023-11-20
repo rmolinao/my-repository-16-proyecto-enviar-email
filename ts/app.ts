@@ -12,13 +12,25 @@ document.addEventListener("DOMContentLoaded", () => {
         mensaje: ''
     }
 
-    const seleccionarElementosInterface = (): void => {
+    let inputEmail:HTMLInputElement;
+    let inputAsunto:HTMLInputElement;
+    let inputMensaje:HTMLTextAreaElement;
 
-        const inputEmail = <HTMLInputElement> document.getElementById('email') ;
-        const inputAsunto = <HTMLInputElement> document.getElementById('asunto')  ;
-        const inputMensaje = <HTMLTextAreaElement> document.getElementById('mensaje');
+    const seleccionarElementosInterface = (): void => {
+        inputEmail = <HTMLInputElement> document.getElementById('email') ;
+        inputAsunto = <HTMLInputElement> document.getElementById('asunto')  ;
+        inputMensaje = <HTMLTextAreaElement> document.getElementById('mensaje');
+    };
+
+
+
+    const asignarEventos = (): void =>{
+        inputEmail.addEventListener('blur',(evt: Event) => {
+            evt.preventDefault();
+            console.log((evt.target as HTMLInputElement).value);
+        });
     };
 
     seleccionarElementosInterface();
-
+    asignarEventos();
 });
