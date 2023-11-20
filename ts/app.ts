@@ -24,6 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const validar = (evt: Event):void =>{
         evt.preventDefault();
+        if ((evt.target as HTMLInputElement).value.trim() === '') {
+            console.log('esta vacio');
+        }
         console.log((evt.target as HTMLInputElement).value);
     };
 
