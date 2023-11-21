@@ -4,13 +4,13 @@ document.addEventListener("DOMContentLoaded", () => {
         email: string;
         asunto: string;
         mensaje: string;
-    }
+    };
 
     const Email = {
         email: '',
         asunto: '',
         mensaje: ''
-    }
+    };
 
     let inputEmail: HTMLInputElement;
     let inputAsunto: HTMLInputElement;
@@ -38,18 +38,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     };
 
-    const limpiarAlerta =(referencia:HTMLElement):void =>{
+    const limpiarAlerta =(referencia:HTMLElement) :void =>{
         const alerta = referencia.querySelector('.bg-red-600');
         if (alerta) {
             alerta.remove();
         }
-    }
+    };
+    const validarEmail = (email:string): boolean =>{
+        const regex =  /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+        return regex.test(email);
+    };
 
     const validar = (evt: Event): void => {
         evt.preventDefault();
         const targetElement = <HTMLInputElement|HTMLTextAreaElement>  evt.target;
         if (targetElement.value.trim() === '') {
             mostrarAlerta(`El campo ${targetElement.id} es obligatorio`,targetElement.parentElement!);
+            return;
+        }
+        if (targetElement.id ==='email' && !validarEmail(targetElement.value)) {
+            mostrarAlerta('El email no es valido',targetElement.parentElement!);
             return;
         }
         limpiarAlerta(targetElement.parentElement!);
