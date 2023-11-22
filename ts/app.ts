@@ -15,11 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let inputEmail: HTMLInputElement;
     let inputAsunto: HTMLInputElement;
     let inputMensaje: HTMLTextAreaElement;
+    let btnSubmit:HTMLButtonElement;
 
     const seleccionarElementosInterface = (): void => {
         inputEmail = <HTMLInputElement>document.getElementById('email');
         inputAsunto = <HTMLInputElement>document.getElementById('asunto');
         inputMensaje = <HTMLTextAreaElement>document.getElementById('mensaje');
+        btnSubmit = <HTMLButtonElement>document.querySelector('#formulario button[type="submit"]');
     };
 
     const mostrarAlerta = (mensage: string, referencia: HTMLElement): void => {
@@ -44,10 +46,14 @@ document.addEventListener("DOMContentLoaded", () => {
             alerta.remove();
         }
     };
-    const comprobarEmail = (): boolean => {
-        // const valores = Object.keys(email).map(key => email[<keyof Email> key]);
-        // return valores.some( value => value == '');
-        return Object.values(email).includes('')//todo lo anterior se simplifica de esta forma;
+    const comprobarEmail = (): void => {
+        if(Object.values(email).includes('')) {
+            btnSubmit.classList.add('opacity-50');
+            btnSubmit.disabled = true;
+            return;
+        }
+        btnSubmit.classList.remove('opacity-50');
+        btnSubmit.disabled = false;
     };
     const validarEmail = (email: string): boolean => {
         const regex = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
@@ -59,10 +65,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const targetElement = <HTMLInputElement | HTMLTextAreaElement>evt.target;
         if (targetElement.value.trim() === '') {
             mostrarAlerta(`El campo ${targetElement.id} es obligatorio`, targetElement.parentElement!);
+            email[<keyof Email> targetElement.name] = '';
+            comprobarEmail();
             return;
         }
         if (targetElement.id === 'email' && !validarEmail(targetElement.value)) {
             mostrarAlerta('El email no es valido', targetElement.parentElement!);
+            email[<keyof Email> targetElement.name] = '';
+            comprobarEmail();
             return;
         }
         limpiarAlerta(targetElement.parentElement!);
@@ -72,9 +82,9 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const asignarEventos = (): void => {
-        inputEmail.addEventListener('blur', validar);
-        inputAsunto.addEventListener('blur', validar);
-        inputMensaje.addEventListener('blur', validar);
+        inputEmail.addEventListener('input', validar);
+        inputAsunto.addEventListener('input', validar);
+        inputMensaje.addEventListener('input', validar);
     };
 
     seleccionarElementosInterface();
