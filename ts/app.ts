@@ -15,13 +15,17 @@ document.addEventListener("DOMContentLoaded", () => {
     let inputEmail: HTMLInputElement;
     let inputAsunto: HTMLInputElement;
     let inputMensaje: HTMLTextAreaElement;
-    let btnSubmit:HTMLButtonElement;
+    let btnSubmit: HTMLButtonElement;
+    let btnRest: HTMLButtonElement;
+    let formulario: HTMLFormElement;
 
     const seleccionarElementosInterface = (): void => {
         inputEmail = <HTMLInputElement>document.getElementById('email');
         inputAsunto = <HTMLInputElement>document.getElementById('asunto');
         inputMensaje = <HTMLTextAreaElement>document.getElementById('mensaje');
+        formulario = <HTMLFormElement>document.getElementById('formulario');
         btnSubmit = <HTMLButtonElement>document.querySelector('#formulario button[type="submit"]');
+        btnRest = <HTMLButtonElement>document.querySelector('#formulario button[type="reset"]');
     };
 
     const mostrarAlerta = (mensage: string, referencia: HTMLElement): void => {
@@ -47,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
     const comprobarEmail = (): void => {
-        if(Object.values(email).includes('')) {
+        if (Object.values(email).includes('')) {
             btnSubmit.classList.add('opacity-50');
             btnSubmit.disabled = true;
             return;
@@ -65,13 +69,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const targetElement = <HTMLInputElement | HTMLTextAreaElement>evt.target;
         if (targetElement.value.trim() === '') {
             mostrarAlerta(`El campo ${targetElement.id} es obligatorio`, targetElement.parentElement!);
-            email[<keyof Email> targetElement.name] = '';
+            email[<keyof Email>targetElement.name] = '';
             comprobarEmail();
             return;
         }
         if (targetElement.id === 'email' && !validarEmail(targetElement.value)) {
             mostrarAlerta('El email no es valido', targetElement.parentElement!);
-            email[<keyof Email> targetElement.name] = '';
+            email[<keyof Email>targetElement.name] = '';
             comprobarEmail();
             return;
         }
@@ -85,6 +89,13 @@ document.addEventListener("DOMContentLoaded", () => {
         inputEmail.addEventListener('input', validar);
         inputAsunto.addEventListener('input', validar);
         inputMensaje.addEventListener('input', validar);
+        btnRest.addEventListener('click', (evt:Event) => {
+            evt.preventDefault();
+            for (let attribute in email)
+                email [<keyof Email> attribute] ='';
+            formulario.reset();
+            comprobarEmail();
+        });
     };
 
     seleccionarElementosInterface();
