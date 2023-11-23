@@ -59,6 +59,12 @@ document.addEventListener("DOMContentLoaded", () => {
         btnSubmit.classList.remove('opacity-50');
         btnSubmit.disabled = false;
     };
+    const resetFromulario =(): void => {
+        for (let attribute in email)
+                email [<keyof Email> attribute] ='';
+            formulario.reset();
+            comprobarEmail();
+    }
 
     const validarEmail = (email: string): boolean => {
         const regex = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
@@ -88,6 +94,12 @@ document.addEventListener("DOMContentLoaded", () => {
         evt.preventDefault();
         spinner.classList.add('flex');
         spinner.classList.remove('hidden');
+        setTimeout(()=>{
+            spinner.classList.remove('flex');
+            spinner.classList.add('hidden');
+            resetFromulario();
+        }
+        ,5000);
 
     }
 
@@ -98,10 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
         formulario.addEventListener('submit',enviarFormulario)
         btnRest.addEventListener('click', (evt:Event) => {
             evt.preventDefault();
-            for (let attribute in email)
-                email [<keyof Email> attribute] ='';
-            formulario.reset();
-            comprobarEmail();
+            resetFromulario();
         });
     };
 
