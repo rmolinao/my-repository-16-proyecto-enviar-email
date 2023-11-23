@@ -18,20 +18,20 @@ document.addEventListener("DOMContentLoaded", () => {
     let btnSubmit: HTMLButtonElement;
     let btnRest: HTMLButtonElement;
     let formulario: HTMLFormElement;
+    let spinner: HTMLDivElement;
 
     const seleccionarElementosInterface = (): void => {
         inputEmail = <HTMLInputElement>document.getElementById('email');
         inputAsunto = <HTMLInputElement>document.getElementById('asunto');
         inputMensaje = <HTMLTextAreaElement>document.getElementById('mensaje');
         formulario = <HTMLFormElement>document.getElementById('formulario');
+        spinner = <HTMLDivElement>document.getElementById('spinner');
         btnSubmit = <HTMLButtonElement>document.querySelector('#formulario button[type="submit"]');
         btnRest = <HTMLButtonElement>document.querySelector('#formulario button[type="reset"]');
     };
 
     const mostrarAlerta = (mensage: string, referencia: HTMLElement): void => {
-
         limpiarAlerta(referencia);
-
         const error = document.createElement('P');
         error.classList.add(
             'bg-red-600',
@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         error.textContent = mensage;
         referencia.appendChild(error);
-
     };
 
     const limpiarAlerta = (referencia: HTMLElement): void => {
@@ -50,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
             alerta.remove();
         }
     };
+
     const comprobarEmail = (): void => {
         if (Object.values(email).includes('')) {
             btnSubmit.classList.add('opacity-50');
@@ -59,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btnSubmit.classList.remove('opacity-50');
         btnSubmit.disabled = false;
     };
+
     const validarEmail = (email: string): boolean => {
         const regex = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
         return regex.test(email);
@@ -82,13 +83,19 @@ document.addEventListener("DOMContentLoaded", () => {
         limpiarAlerta(targetElement.parentElement!);
         email[<keyof Email>targetElement.id] = targetElement.value.trim().toLowerCase();
         comprobarEmail();
-
     };
+    const enviarFormulario = (evt :Event):void => {
+        evt.preventDefault();
+        spinner.classList.add('flex');
+        spinner.classList.remove('hidden');
+
+    }
 
     const asignarEventos = (): void => {
         inputEmail.addEventListener('input', validar);
         inputAsunto.addEventListener('input', validar);
         inputMensaje.addEventListener('input', validar);
+        formulario.addEventListener('submit',enviarFormulario)
         btnRest.addEventListener('click', (evt:Event) => {
             evt.preventDefault();
             for (let attribute in email)
