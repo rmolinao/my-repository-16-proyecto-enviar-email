@@ -59,11 +59,11 @@ document.addEventListener("DOMContentLoaded", () => {
         btnSubmit.classList.remove('opacity-50');
         btnSubmit.disabled = false;
     };
-    const resetFromulario =(): void => {
+    const resetFromulario = (): void => {
         for (let attribute in email)
-                email [<keyof Email> attribute] ='';
-            formulario.reset();
-            comprobarEmail();
+            email[<keyof Email>attribute] = '';
+        formulario.reset();
+        comprobarEmail();
     }
 
     const validarEmail = (email: string): boolean => {
@@ -90,25 +90,46 @@ document.addEventListener("DOMContentLoaded", () => {
         email[<keyof Email>targetElement.id] = targetElement.value.trim().toLowerCase();
         comprobarEmail();
     };
-    const enviarFormulario = (evt :Event):void => {
+    const enviarFormulario = (evt: Event): void => {
         evt.preventDefault();
         spinner.classList.add('flex');
         spinner.classList.remove('hidden');
-        setTimeout(()=>{
+        setTimeout(() => {
             spinner.classList.remove('flex');
             spinner.classList.add('hidden');
             resetFromulario();
+            crearAlerte();
         }
-        ,5000);
+            , 3000);
 
     }
+
+    const crearAlerte = (): void => {
+        const alertaExito = document.createElement('P');
+        alertaExito.classList.add(
+            'bg-green-500',
+            'text-white',
+            'p-2',
+            'text-center',
+            'rounded-lg',
+            'mt-10',
+            'font-bold',
+            'text-sm',
+            'uppercase'
+        );
+        alertaExito.textContent = 'Mensaje enviado correctamente';
+        formulario.appendChild(alertaExito);
+        setTimeout(() => {
+            alertaExito.remove();
+        }, 3000);
+    };
 
     const asignarEventos = (): void => {
         inputEmail.addEventListener('input', validar);
         inputAsunto.addEventListener('input', validar);
         inputMensaje.addEventListener('input', validar);
-        formulario.addEventListener('submit',enviarFormulario)
-        btnRest.addEventListener('click', (evt:Event) => {
+        formulario.addEventListener('submit', enviarFormulario)
+        btnRest.addEventListener('click', (evt: Event) => {
             evt.preventDefault();
             resetFromulario();
         });
